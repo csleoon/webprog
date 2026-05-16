@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  if (isLoggedIn()) { window.location.href = '/'; return; }
+  if (isLoggedIn() && getUser()) { window.location.href = '/'; return; }
 
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'voting-app-v1';
+const CACHE_NAME = 'voting-app-v2';
 
 const STATIC_ASSETS = [
   '/',

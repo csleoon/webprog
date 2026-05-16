@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (isLoggedIn()) {
     const me = await apiFetch('/api/me');
     if (me && me.ok) {
+      const userData = { id: me.data.id, username: me.data.username, role: me.data.role };
+      localStorage.setItem('user', JSON.stringify(userData));
+      buildNav();
       votedPollIds = new Set(me.data.votes.map(v => v.pollId));
       if (me.data.votes.length > 0 && historySection) {
         historySection.hidden = false;
