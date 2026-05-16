@@ -28,5 +28,8 @@
   "jest": {
     "testEnvironment": "node",
     "globalSetup": "./jest.globalSetup.js"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
