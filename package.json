@@ -4,7 +4,7 @@
   "description": "Online szavazási platform - Webprogramozás alapjai projekt",
   "main": "src/server.js",
   "scripts": {
-    "build": "npx prisma db push",
+    "build": "npx prisma db push && node prisma/seed.js",
     "start": "node src/server.js",
     "dev": "node src/server.js",
     "test": "jest --runInBand --forceExit",
