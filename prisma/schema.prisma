@@ -1,0 +1,49 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         String   @default("user")
+  createdAt    DateTime @default(now())
+  polls        Poll[]
+  votes        Vote[]
+}
+
+model Poll {
+  id        Int      @id @default(autoincrement())
+  question  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  creatorId Int?
+  creator   User?    @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  options   Option[]
+}
+
+model Option {
+  id     Int    @id @default(autoincrement())
+  text   String
+  pollId Int
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes  Vote[]
+}
+
+model Vote {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  optionId Int
+  pollId   Int
+  castAt   DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option   Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollId])
+}
