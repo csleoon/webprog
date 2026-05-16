@@ -4,8 +4,8 @@
   "description": "Online szavazási platform - Webprogramozás alapjai projekt",
   "main": "src/server.js",
   "scripts": {
-    "build": "npx prisma generate && npx prisma db push && node prisma/seed.js",
-    "start": "node src/server.js",
+    "build": "npx prisma generate",
+    "start": "npx prisma db push && node prisma/seed.js && node src/server.js",
     "dev": "node src/server.js",
     "test": "jest --runInBand --forceExit",
     "seed": "node prisma/seed.js"
