@@ -38,11 +38,11 @@ router.post('/login', async (req, res) => {
   try {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return res.status(401).json({ error: 'Hibás email vagy jelszó.' });
+      return res.status(401).json({ error: 'Nincs fiók regisztrálva ezzel az email címmel.' });
     }
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
-      return res.status(401).json({ error: 'Hibás email vagy jelszó.' });
+      return res.status(401).json({ error: 'Hibás jelszó.' });
     }
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
