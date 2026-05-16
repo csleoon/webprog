@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const li = document.createElement('li');
           li.className = 'history-item';
           li.innerHTML = `
-            <div class="poll-question">${escHtml(v.poll.question)}</div>
+            <div class="poll-question">${escHtml(v.option.poll.question)}</div>
             <div class="voted-option">Szavazatom: ${escHtml(v.option.text)}</div>
             <div class="cast-at">${new Date(v.castAt).toLocaleString('hu-HU')}</div>
           `;

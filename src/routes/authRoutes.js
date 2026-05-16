@@ -62,8 +62,12 @@ router.get('/me', verifyToken, async (req, res) => {
       createdAt: true,
       votes: {
         include: {
-          option: { select: { text: true } },
-          poll: { select: { question: true } },
+          option: {
+            select: {
+              text: true,
+              poll: { select: { question: true } },
+            },
+          },
         },
         orderBy: { castAt: 'desc' },
       },
