@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     showAlert(registerForm, 'Sikeres regisztráció! Átirányítás...', 'success');
     localStorage.setItem('token', result.data.token);
+    localStorage.setItem('user', JSON.stringify(result.data.user));
     setTimeout(() => { window.location.href = '/'; }, 800);
   });
 });

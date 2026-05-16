@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
-    res.status(201).json({ message: 'Sikeres regisztráció.', token });
+    res.status(201).json({ message: 'Sikeres regisztráció.', token, user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     if (err.code === 'P2002') {
       return res.status(409).json({ error: 'Ez az email vagy felhasználónév már foglalt.' });
