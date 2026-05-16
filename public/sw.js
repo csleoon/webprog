@@ -18,18 +18,21 @@ const STATIC_ASSETS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+      .catch(err => console.warn('SW: cache.addAll részben sikertelen:', err))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    caches.keys()
+      .then(keys => Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      ))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
@@ -37,37 +40,52 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
 
   if (url.pathname.startsWith('/api/')) {
-    event.respondWith(networkFirstApi(request));
+    event.respondWith(handleApi(request));
     return;
   }
 
   if (request.mode === 'navigate') {
-    event.respondWith(navigationHandler(request));
+    event.respondWith(handleNavigation(request));
     return;
   }
 
   event.respondWith(cacheFirst(request));
 });
 
-async function networkFirstApi(request) {
-  const cache = await caches.open(CACHE_NAME);
+async function handleApi(request) {
+  // Non-GET requests (POST, PATCH, DELETE): forward directly, no caching
+  if (request.method !== 'GET') {
+    try {
+      return await fetch(request);
+    } catch (err) {
+      console.error('SW: API hálózati hiba:', err);
+      return new Response(
+        JSON.stringify({ error: 'Hálózati hiba – nem sikerült csatlakozni a szerverhez.' }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  // GET requests: network-first, cache fallback
   try {
-    const response = await fetch(request.clone());
-    if (response.ok && request.method === 'GET') {
+    const response = await fetch(request);
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
       cache.put(request, response.clone());
     }
     return response;
-  } catch {
-    const cached = await cache.match(request);
+  } catch (err) {
+    console.warn('SW: GET API offline, cache-ből szolgál:', request.url);
+    const cached = await caches.match(request);
     if (cached) return cached;
-    return new Response(JSON.stringify({ error: 'Offline – nincs gyorsítótárazott adat.' }), {
-      status: 503,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: 'Offline – nincs gyorsítótárazott adat.' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
 
-async function navigationHandler(request) {
+async function handleNavigation(request) {
   try {
     return await fetch(request);
   } catch {
