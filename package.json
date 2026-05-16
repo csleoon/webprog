@@ -18,11 +18,11 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.0",
     "express": "^4.19.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.10.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "prisma": "^5.10.0",
     "supertest": "^6.3.4"
   },
   "jest": {
