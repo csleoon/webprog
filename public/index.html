@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Szavazások</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="manifest" href="/manifest.json" />
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/">Szavazó Platform</a>
+    <ul class="nav-links" id="nav-links"></ul>
+  </nav>
+
+  <main>
+    <h1>Aktív szavazások</h1>
+    <p class="subtitle">Szavazz a téged érdeklő kérdésekre!</p>
+
+    <div class="polls-grid" id="polls-grid">
+      <p class="loader">Betöltés...</p>
+    </div>
+
+    <section id="history-section" hidden style="margin-top:2.5rem">
+      <h2>Szavazási előzmények</h2>
+      <ul class="history-list" id="history-list"></ul>
+    </section>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .catch(err => console.error('SW hiba:', err));
+    }
+  </script>
+</body>
+</html>

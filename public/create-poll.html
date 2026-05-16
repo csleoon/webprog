@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Új szavazás – Szavazó Platform</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="manifest" href="/manifest.json" />
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/">Szavazó Platform</a>
+    <ul class="nav-links" id="nav-links"></ul>
+  </nav>
+
+  <main>
+    <div class="form-card" style="max-width:560px">
+      <h2>Új szavazás létrehozása</h2>
+      <div id="alert" class="alert" hidden></div>
+
+      <form id="create-poll-form">
+        <div class="form-group">
+          <label for="question">Kérdés</label>
+          <input type="text" id="question" name="question" required
+                 placeholder="Pl. Melyik a kedvenc programozási nyelved?" />
+        </div>
+
+        <div class="form-group">
+          <label>Lehetőségek (min. 2)</label>
+          <div class="options-list" id="options-list"></div>
+          <button type="button" class="btn btn-secondary btn-sm" id="add-option-btn">+ Lehetőség hozzáadása</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:.5rem">
+          Szavazás létrehozása
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/create-poll.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .catch(err => console.error('SW hiba:', err));
+    }
+  </script>
+</body>
+</html>

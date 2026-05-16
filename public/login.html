@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belépés – Szavazó Platform</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="manifest" href="/manifest.json" />
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/">Szavazó Platform</a>
+    <ul class="nav-links" id="nav-links"></ul>
+  </nav>
+
+  <main>
+    <div class="form-card">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-login">Belépés</button>
+        <button class="tab-btn" id="tab-register">Regisztráció</button>
+      </div>
+
+      <section id="section-login">
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email cím</label>
+            <input type="email" id="login-email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Jelszó</label>
+            <input type="password" id="login-password" name="password" required autocomplete="current-password" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Belépés</button>
+        </form>
+      </section>
+
+      <section id="section-register" hidden>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="reg-username">Felhasználónév</label>
+            <input type="text" id="reg-username" name="username" required autocomplete="username" />
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email cím</label>
+            <input type="email" id="reg-email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Jelszó</label>
+            <input type="password" id="reg-password" name="password" required minlength="6" autocomplete="new-password" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Regisztráció</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .catch(err => console.error('SW hiba:', err));
+    }
+  </script>
+</body>
+</html>
