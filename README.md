@@ -27,7 +27,7 @@ Az alkalmazás egy online szavazási platform, ahol a felhasználók különböz
 ## Projekt struktúra
 
 ```
-webprog_claude/
+webprog/
 ├── prisma/
 │   ├── schema.prisma       # Adatbázis séma
 │   └── seed.js             # Kezdeti adatok feltöltése
